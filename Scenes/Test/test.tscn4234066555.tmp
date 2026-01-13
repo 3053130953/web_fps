@@ -46,18 +46,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2440872, 0.6531408, 0.83018
 [node name="StaticBody3D" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 8.410573, 2, 2.167224)
 
-[node name="StaticBody3D4" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.6428328, 2, 2.167224)
-
-[node name="StaticBody3D5" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.6428328, 2, 18.810898)
-
-[node name="StaticBody3D6" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 9.035398, 2, 18.810898)
-
-[node name="StaticBody3D7" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 9.035398, 2, 11.36689)
-
 [node name="StaticBody3D2" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 8.410573, 2, -10.373157)
 

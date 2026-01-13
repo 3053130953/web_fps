@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnlqcohp8x4a0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1u2pp"]
+albedo_color = Color(0.8493872, 0.7808125, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_1u2pp"]
+radius = 0.1
+height = 0.2
+
+[node name="Particle" type="CPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_1u2pp")
+emitting = false
+amount = 4
+one_shot = true
+explosiveness = 0.2
+mesh = SubResource("SphereMesh_1u2pp")
+emission_shape = 2
+emission_sphere_radius = 0.5
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0

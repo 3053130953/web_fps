@@ -29,8 +29,7 @@ var attack_request: bool = false
 var kick_request: bool = false
 var emote_wave_request: bool = false
 var emote_sit_request: bool = false
-var fire_request: bool = false
-var aim_request: bool = false
+var exc_request: bool = false
 
 var _current_mode: ControlMode
 
@@ -79,15 +78,18 @@ func _physics_process(delta: float) -> void:
 	
 	# 2. 状态性输入
 	is_aiming = Input.is_action_pressed("aim")
-	
+	is_firing = Input.is_action_pressed("fire")
 	# 3. 瞬发性输入 (One-shot Input)
 	# 注意：这些请求需要在被状态机消费后重置为 false
 	if Input.is_action_just_pressed("Jump"): jump_request = true
 	if Input.is_action_just_pressed("Attack"): attack_request = true
 	if Input.is_action_just_pressed("Kick"): kick_request = true
+	if Input.is_action_just_pressed("reload"): exc_request = true
 	if Input.is_action_just_pressed("emote_wave"): emote_wave_request = true
 	if Input.is_action_just_pressed("emote_sit"): emote_sit_request = true
-	if Input.is_action_just_pressed("fire"): fire_request = true
+	#if Input.is_action_just_pressed("fire"): fire_request = true
+	#if Input.is_action_just_pressed("aim"): aim_request = true
+	#if Input.is_action_just_released("aim"): aim_request = false
 func _process_movement() -> void:
 	# [修改] 计算逻辑移入 InputController，保持 Player 纯净
 	var raw_input = Input.get_vector("Left", "Right", "Up", "Down")
@@ -128,6 +130,12 @@ func consume_kick() -> bool:
 		return true
 	return false
 	
+func consume_exc() -> bool:
+	if exc_request:
+		exc_request = false
+		return true
+	return false
+	
 func consume_emote_wave() -> bool:
 	if emote_wave_request:
 		emote_wave_request = false
@@ -140,8 +148,14 @@ func consume_emote_sit() -> bool:
 		return true
 	return false
 
-func consume_fire() -> bool:
-	if fire_request:
-		fire_request = false
-		return true
-	return false
+#func consume_fire() -> bool:
+	#if fire_request:
+		#fire_request = false
+		#return true
+	#return false
+#
+#func consume_aim() -> bool:
+	#if !aim_request:
+		#aim_request = true
+		#return true
+	#return false

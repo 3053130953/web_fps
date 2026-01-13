@@ -11,6 +11,7 @@ var is_trigger_held: bool = false # ### [新增] 用于全自动武器
 
 @export var weapon_scene_proto:PackedScene
 @export var stats: WeaponStats
+@export var impact_effect_scene: PackedScene
 
 func _ready():
 	# 确保一开始红点是隐藏的
@@ -21,8 +22,8 @@ func _ready():
 func init_laser(ray: RayCast3D):
 	aim_raycast = ray
 	# 设置射线的长度为100米 (根据你的需求)
-	#aim_raycast.target_position = Vector3(0, 0, -100) 
-
+	aim_raycast.target_position = Vector3(0, 0, -100) 
+	print(ray)
 func equip_weapon(data: WeaponStats) -> void:
 	# 卸载旧武器
 	if current_weapon:
@@ -49,7 +50,6 @@ func _physics_process(delta: float) -> void: # ### [修改] 射击判定建议�
 	# 1. 处理全自动射击
 	if is_trigger_held and current_weapon and current_weapon.stats.is_automatic:
 		_attempt_fire_logic()
-	
 	# 2. 处理激光指示器 (整合了你原本的 _process 逻辑)
 	_update_laser(delta)
 	
@@ -65,24 +65,25 @@ func _perform_hitscan_check() -> void:
 	
 	# 强制更新射线，确保射击瞬间是最新的摄像机朝向
 	aim_raycast.force_raycast_update()
-	#print(aim_raycast)
+	#print(aim_raycast.rotation)
 	if aim_raycast.is_colliding():
 		var collider = aim_raycast.get_collider()
+		print(collider)
 		var hit_point = aim_raycast.get_collision_point()
 		
-		print("point_red")
+		print(hit_point)
 		# print("Hit:", collider.name) # Debug
 		
 		# 造成伤害接口
-		if collider.has_method("take_damage"):
-			collider.take_damage(current_weapon.stats.damage)
+		#if collider.has_method("take_damage"):
+			#collider.take_damage(current_weapon.stats.damage)
 			
 		# 生成击中特效（从 WeaponInstance 获取弹孔/火花预制体，或者在这里直接生成）
-		# _spawn_impact_effect(hit_point, aim_raycast.get_collision_normal())
-
+		_spawn_impact_effect(hit_point, aim_raycast.get_collision_normal())
+		
 func _update_laser(_delta: float) -> void:
 	if not laser_dot: return
-
+	print(is_aiming)
 	if is_aiming and aim_raycast:
 		aim_raycast.force_raycast_update() # 如果性能敏感，可考虑每隔几帧更新，但在射击游戏建议实时
 		
@@ -104,32 +105,31 @@ func _update_laser(_delta: float) -> void:
 
 func set_aiming_state(active: bool):
 	is_aiming = active
-
 #func _process(delta):
-	#if is_aiming and aim_raycast:
-		## 强制射线更新检测（保证红点无延迟）
-		#aim_raycast.force_raycast_update()
-		#
-		#if aim_raycast.is_colliding():
-			## 如果检测到物体 (在100米内)
-			#var point = aim_raycast.get_collision_point()
-			#var normal = aim_raycast.get_collision_normal()
-			#
-			## 1. 让红点出现在碰撞点
-			#laser_dot.global_position = point
-			#
-			## 2. (可选) 让红点稍微浮起一点点，避免穿模
-			#laser_dot.global_position += normal * 0.01
-			#
-			## 3. 显示红点
-			#laser_dot.visible = true
-		#else:
-			## 如果指向天空或超过100米，隐藏红点
-			#laser_dot.visible = false
-	#else:
-		## 如果没在瞄准，确保红点隐藏
-		#if laser_dot.visible:
-			#laser_dot.visible = false
 
-# [新增] 对外接口：切换瞄准状态
-# 你可以在 InputController 里调用这个函数
+func _spawn_impact_effect(pos: Vector3, normal: Vector3) -> void:
+	if not impact_effect_scene:
+		return
+	
+	# 1. 实例化
+	var effect = impact_effect_scene.instantiate()
+	# 2. 添加到场景根节点
+	# 注意：不要 add_child(effect) 到 WeaponManager 下，否则特效会随着枪移动
+	get_tree().current_scene.add_child(effect)
+	
+	# 3. 设置位置
+	effect.global_position = pos
+	effect.emitting = true
+	#print(effect.global_position)
+	# 4. 设置朝向：让特效的 -Z 轴（通常是前方）对齐法线方向
+	# 这是一个处理 look_at 遇到平行向量报错的标准写法
+	if normal.is_equal_approx(Vector3.UP):
+		effect.look_at(pos + normal, Vector3.RIGHT)
+	elif normal.is_equal_approx(Vector3.DOWN):
+		effect.look_at(pos + normal, Vector3.RIGHT)
+	else:
+		effect.look_at(pos + normal, Vector3.UP)
+		
+	# 5. (可选) 如果你的特效场景里没有自动销毁脚本，可以在这里加一个定时器保险
+	# 2秒后自动清除，防止场景里堆积太多垃圾
+	get_tree().create_timer(2.0).timeout.connect(effect.queue_free)

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WeaponStats" load_steps=3 format=3 uid="uid://3c2b23ijn2n2"]
+
+[ext_resource type="PackedScene" uid="uid://dm1m8n6agri3y" path="res://Assets/Normal version Color and NormalMap/FBX/ak47variant.fbx" id="1_4rgb3"]
+[ext_resource type="Script" uid="uid://ckwwa4i0fllbc" path="res://Script/Weapon/weapon_stats.gd" id="2_m0svo"]
+
+[resource]
+script = ExtResource("2_m0svo")
+weapon_name = "Ak"
+mesh = ExtResource("1_4rgb3")
+is_automatic = false
+metadata/_custom_type_script = "uid://ckwwa4i0fllbc"

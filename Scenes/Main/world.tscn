@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://10xdbcjgard5"]
+
+[node name="World" type="Node3D"]
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="PlayersContainer" type="Node3D" parent="."]
+
+[node name="MultiplayerSpawner" type="Node3D" parent="PlayersContainer"]

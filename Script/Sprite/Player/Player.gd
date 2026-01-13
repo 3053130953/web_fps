@@ -29,11 +29,11 @@ func _physics_process(delta: float) -> void:
 
 func _sync_weapon_input() -> void:
 	# 同步瞄准状态 (bool)
-	weapon_manager.set_aiming_state(input_controller.aim_request)
+	weapon_manager.set_aiming_state(input_controller.is_aiming)
 	
 	# 同步开火状态 (bool - 按住)
 	# WeaponManager 内部会根据全自动/半自动处理这个 bool
-	weapon_manager.set_fire_input(input_controller.fire_request)
+	weapon_manager.set_fire_input(input_controller.is_firing)
 
 #func _set_weapon():
 	#if input_controller and weapon_manager:
