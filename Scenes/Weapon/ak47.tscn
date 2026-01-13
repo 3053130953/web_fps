@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5deo3l8ng6mt"]
+
+[ext_resource type="Script" uid="uid://dlmuwerpik2of" path="res://Script/Weapon/weapon_instance.gd" id="1_p5pi2"]
+
+[node name="Ak47" type="Node3D"]
+script = ExtResource("1_p5pi2")
+
+[node name="mesh" type="Node3D" parent="."]
+transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47640476, 0, 0)
+
+[node name="Timer" type="Node" parent="."]
+
+[node name="CooldownTimer" type="Timer" parent="Timer"]

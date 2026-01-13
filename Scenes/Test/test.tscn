@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://c3v54gi7nqjpn"]
+
+[ext_resource type="PackedScene" uid="uid://baqx6g6hfxif" path="res://Scenes/Player/Godot.tscn" id="1_oy6ep"]
+[ext_resource type="PackedScene" uid="uid://cc5lolaer4b4b" path="res://Scenes/Walls/basic_Wall.tscn" id="2_kr3tn"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_oy6ep"]
+sky_top_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Sky" id="Sky_kr3tn"]
+sky_material = SubResource("ProceduralSkyMaterial_oy6ep")
+
+[sub_resource type="Environment" id="Environment_v7cj3"]
+sky = SubResource("Sky_kr3tn")
+ambient_light_source = 3
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_o3qbn"]
+size = Vector2(50, 50)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_oy6ep"]
+data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_v7cj3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="Plain" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Plain"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plain/StaticBody3D"]
+mesh = SubResource("PlaneMesh_o3qbn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plain/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_oy6ep")
+
+[node name="Player" parent="." instance=ExtResource("1_oy6ep")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2440872, 0.6531408, 0.83018875)
+
+[node name="Decs" type="Node3D" parent="."]
+
+[node name="Wall" type="Node3D" parent="Decs"]
+
+[node name="StaticBody3D" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 8.410573, 2, 2.167224)
+
+[node name="StaticBody3D2" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 8.410573, 2, -10.373157)
+
+[node name="StaticBody3D3" parent="Decs/Wall" instance=ExtResource("2_kr3tn")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.1239376, 2, -9.824404)
